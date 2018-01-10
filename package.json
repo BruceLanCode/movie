@@ -1,0 +1,27 @@
+{
+  "name": "movie",
+  "version": "1.0.0",
+  "description": "a movie web created by node",
+  "main": "app.js",
+  "scripts": {
+    "dev": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lantuhui/movie.git"
+  },
+  "keywords": [
+    "node",
+    "mongodb"
+  ],
+  "author": "lantu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lantuhui/movie/issues"
+  },
+  "homepage": "https://github.com/lantuhui/movie#readme",
+  "dependencies": {
+    "koa": "^2.4.1",
+    "koa-pug": "^3.0.0-2"
+  }
+}
