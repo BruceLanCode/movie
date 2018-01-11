@@ -22,6 +22,7 @@
   "homepage": "https://github.com/lantuhui/movie#readme",
   "dependencies": {
     "koa": "^2.4.1",
-    "koa-pug": "^3.0.0-2"
+    "koa-pug": "^3.0.0-2",
+    "koa-router": "^7.3.0"
   }
 }
