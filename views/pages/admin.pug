@@ -3,7 +3,8 @@ extends ../layout
 block content
     .container
         .row
-            form.form-horizontal(role="form", action="/admin/movie", method="post")
+            form.form-horizontal(role="form", action="/admin/movie", method="POST")
+                input(type="hidden", name="movie[_id]")
                 .form-group
                     label.col-sm-2.control-label(for="inputTitle") 电影名字
                     .col-sm-10
@@ -32,6 +33,10 @@ block content
                     label.col-sm-2.control-label(for="inputYear") 上映年代
                     .col-sm-10
                         input#inputYear.form-control(type="text", name="year")
+                .form-group
+                    label.col-sm-2.control-label(for="inputSummary") 电影介绍
+                    .col-sm-10
+                        input#inputSummary.form-control(type="text", name="summary")
                 .form-group
                     .col-sm-offset-2.col-sm-10
                     button.btn.btn-default(type="submit") 提交
