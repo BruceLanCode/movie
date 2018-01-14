@@ -109,6 +109,22 @@ router.post('/admin/movie', koaBody(), async (ctx, next) => {
     await next();
 });
 
+router.get('/admin/list', async (ctx, next) => {
+    await Movie.fetch((err, movies) => {
+        if(err) {
+            console.log(err)
+        }
+
+        ctx.render('list', {
+            title: 'movie列表页',
+            documents: {
+                results: movies
+            }
+        })
+    });
+    await next()
+})
+
 app.use(router.routes());
 app.use(staticServer(path.join(__dirname,'public')));
 
