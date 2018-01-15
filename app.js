@@ -47,7 +47,7 @@ router.get('/movie/:id',async (ctx, next) => {
     await next();
 });
 //admin page
-router.get('/admin/new/:id', async (ctx, next) => {
+router.get('/admin/new/:id?', async (ctx, next) => {
     let id = ctx.params.id;
     if (id) {
         await Movie.findById(id, (err, movie) => {
@@ -73,14 +73,14 @@ router.post('/admin/movie', koaBody(), async (ctx, next) => {
     let _movie = ctx.request.body.movie;
     if(!_movie._id) {
         _movie = new Movie({
-            director: ctx.request.body.director,
-            title: ctx.request.body.title,
-            language: ctx.request.body.language,
-            country: ctx.request.body.country,
-            year: ctx.request.body.year,
-            poster: ctx.request.body.poster,
-            flash: ctx.request.body.flash,
-            summary: ctx.request.body.summary,
+            director: ctx.request.body.movie.director,
+            title: ctx.request.body.movie.title,
+            language: ctx.request.body.movie.language,
+            country: ctx.request.body.movie.country,
+            year: ctx.request.body.movie.year,
+            poster: ctx.request.body.movie.poster,
+            flash: ctx.request.body.movie.flash,
+            summary: ctx.request.body.movie.summary,
         });
 
         await _movie.save((err, movie) => {
@@ -108,7 +108,7 @@ router.post('/admin/movie', koaBody(), async (ctx, next) => {
     }
     await next();
 });
-
+//list page
 router.get('/admin/list', async (ctx, next) => {
     await Movie.fetch((err, movies) => {
         if(err) {
@@ -122,6 +122,22 @@ router.get('/admin/list', async (ctx, next) => {
             }
         })
     });
+    await next()
+});
+//delete item
+router.del('/admin/list', async (ctx, next) => {
+    let id = ctx.query.id;
+
+    if(id) {
+        await Movie.remove({_id: id}, (err, home) => {
+            if(err) {
+                console.log(err);
+            }
+            else {
+                ctx.body = {success: 1};
+            }
+        })
+    }
     await next()
 })
 
