@@ -32,7 +32,6 @@ router.get('/',async (ctx, next) => {
             movies: movies
         });
     });
-    await next();
 });
 //detail page
 router.get('/movie/:id',async (ctx, next) => {
@@ -47,7 +46,6 @@ router.get('/movie/:id',async (ctx, next) => {
             movie: movie
         });
     });
-    await next();
 });
 //admin new page
 router.get('/admin/new', async (ctx, next) => {
@@ -64,7 +62,6 @@ router.get('/admin/new', async (ctx, next) => {
             language: '',
         }
     });
-    await next();
 })
 
 //admin update page
@@ -78,14 +75,13 @@ router.get('/admin/update/:id', async (ctx, next) => {
             });
         });
     }
-    await next();
 })
 //admin post movie
 router.post('/admin/movie', koaBody(), async (ctx, next) => {
     let movieObj = ctx.request.body.movie;
     let id = ctx.request.body.movie._id;
     let _movie;
-    if(id !== 'undefined') {
+    if(id) {
         await Movie.findById(id, async (err, movie) => {
             if(err) {
                 console.log(err);
@@ -95,10 +91,10 @@ router.post('/admin/movie', koaBody(), async (ctx, next) => {
                 if(err) {
                     console.log(err);
                 }
-
                 ctx.redirect('/movie/' + movie._id);
             })
         })
+        console.log('end find')
     }
     else {
         _movie = new Movie({
@@ -120,7 +116,6 @@ router.post('/admin/movie', koaBody(), async (ctx, next) => {
             ctx.redirect('/movie/' + movie._id);
         })
     }
-    await next();
 });
 //list page
 router.get('/admin/list', async (ctx, next) => {
@@ -136,7 +131,6 @@ router.get('/admin/list', async (ctx, next) => {
             results: movies
         })
     });
-    await next()
 });
 //delete item
 router.del('/admin/list', async (ctx, next) => {
@@ -153,7 +147,6 @@ router.del('/admin/list', async (ctx, next) => {
             }
         })
     }
-    await next()
 })
 
 app.use(router.routes());
