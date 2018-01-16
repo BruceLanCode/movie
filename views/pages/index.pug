@@ -6,7 +6,8 @@ block content
             each item in movies
                 .col-sm-2
                     .thumbnail
-                        img(src=item.poster,alt=item.title)
+                        a(href="/movie/" + item._id)
+                            img(src=item.poster,alt=item.title)
                         .caption
                         h3 #{item.title}
                         p

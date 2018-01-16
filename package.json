@@ -26,6 +26,7 @@
     "koa-pug": "^3.0.0-2",
     "koa-router": "^7.3.0",
     "koa-static": "^4.0.2",
+    "moment": "^2.20.1",
     "mongoose": "^4.13.9"
   }
 }
