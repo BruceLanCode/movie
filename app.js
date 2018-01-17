@@ -20,33 +20,26 @@ const pug = new Pug({
 app.listen(port);
 
 const router = new Router();
+
 //index page
 router.get('/',async (ctx, next) => {
-    await Movie.fetch(function (err, movies) {
-        if(err !== null) {
-            console.log(err);
-        }
-
-        ctx.render('index',{
-            title: 'movie 首页',
-            movies: movies
-        });
+    let movies = await Movie.fetch();
+    ctx.render('index', {
+        title: 'movie 首页',
+        movies: movies
     });
 });
+
 //detail page
 router.get('/movie/:id',async (ctx, next) => {
     let id = ctx.params.id;
-
-    await Movie.findById(id, function (err, movie) {
-        if(err !== null) {
-            console.log(err);
-        }
-        ctx.render('detail',{
-            title: `movie 详情页`,
-            movie: movie
-        });
+    let movie = await Movie.findById(id);
+    ctx.render('detail', {
+        title: 'movie 详情页',
+        movie,
     });
 });
+
 //admin new page
 router.get('/admin/new', async (ctx, next) => {
     ctx.render('admin', {
@@ -62,39 +55,30 @@ router.get('/admin/new', async (ctx, next) => {
             language: '',
         }
     });
-})
+});
 
 //admin update page
 router.get('/admin/update/:id', async (ctx, next) => {
     let id = ctx.params.id;
+    let movie;
     if (id) {
-        await Movie.findById(id, (err, movie) => {
-            ctx.render('admin', {
-                title: 'movie 后台更新页',
-                movie: movie
-            });
+        movie = await Movie.findById(id);
+        ctx.render('admin', {
+            title: 'movie 后台更新页',
+            movie
         });
     }
-})
+});
 //admin post movie
 router.post('/admin/movie', koaBody(), async (ctx, next) => {
     let movieObj = ctx.request.body.movie;
     let id = ctx.request.body.movie._id;
     let _movie;
     if(id) {
-        await Movie.findById(id, async (err, movie) => {
-            if(err) {
-                console.log(err);
-            }
-            _movie = Object.assign(movie, movieObj);
-            await _movie.save((err, movie) => {
-                if(err) {
-                    console.log(err);
-                }
-                ctx.redirect('/movie/' + movie._id);
-            })
-        })
-        console.log('end find')
+        let movie = await Movie.findById(id);
+        _movie = Object.assign(movie, movieObj);
+        await _movie.save();
+        ctx.redirect('/movie/' + movie._id);
     }
     else {
         _movie = new Movie({
@@ -108,46 +92,36 @@ router.post('/admin/movie', koaBody(), async (ctx, next) => {
             summary: movieObj.summary,
         });
 
-        await _movie.save((err, movie) => {
-            if(err) {
-                console.log(err)
-            }
-
-            ctx.redirect('/movie/' + movie._id);
-        })
+        let movie = await _movie.save();
+        ctx.redirect('/movie/' + movie._id);
     }
 });
+
 //list page
 router.get('/admin/list', async (ctx, next) => {
-    await Movie.fetch((err, movies) => {
-        if(err) {
-            console.log(err)
-        }
-        movies.forEach(movie => {
-            movie.meta.updateAt = moment(movie.meta.updateAt).format('MM/DD/YYYY');
-        });
-        ctx.render('list', {
-            title: 'movie 列表页',
-            results: movies
-        })
+    let movies = await Movie.fetch();
+    movies.forEach(movie => {
+        movie.meta.updateAt = moment(movie.meta.createAt).format('MM/DD/YYYY');
+    });
+    ctx.render('list', {
+        title: 'movie 列表页',
+        results: movies
     });
 });
 //delete item
 router.del('/admin/list', async (ctx, next) => {
     let id = ctx.query.id;
-
+    let movie;
     if(id) {
-        await Movie.remove({_id: id}, (err, movie) => {
-            if(err) {
-                console.log(err);
-                ctx.body = {success: 0};
-            }
-            else {
-                ctx.body = {success: 1};
-            }
-        })
+        try {
+            await Movie.remove({_id: id});
+            ctx.body = {success: 1};
+        } catch(err) {
+            console.log(err);
+            ctx.body = {success: 0};
+        }
     }
-})
+});
 
 app.use(router.routes());
 app.use(staticServer(path.join(__dirname,'public')));

@@ -4,7 +4,7 @@ block content
     .container
         .row
             .col-sm-7
-                embed(src=movie.flash, allowFullScreen="true", quality="high", width="720", height="600", align="middle", allowScriptAccess="always", type="application/x-shockwave-flash")
+                video(src=movie.flash, width="720", height="600", controls="controls", preload="auto")
             .col-sm-5
                 .dl-horizontal
                     dt 电影名字:
