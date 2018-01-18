@@ -99,14 +99,16 @@ router.post('/admin/movie', koaBody(), async (ctx, next) => {
 
 //list page
 router.get('/admin/list', async (ctx, next) => {
-    let movies = await Movie.fetch();
-    movies.forEach(movie => {
-        movie.meta.updateAt = moment(movie.meta.createAt).format('MM/DD/YYYY');
-    });
-    ctx.render('list', {
-        title: 'movie 列表页',
-        results: movies
-    });
+    try {
+        let movies = await Movie.fetch();
+        ctx.render('list', {
+            title: 'movie 列表页',
+            results: movies
+        });
+    } catch (err) {
+        console.log('list err: ' + err);
+    }
+
 });
 //delete item
 router.del('/admin/list', async (ctx, next) => {
@@ -123,6 +125,10 @@ router.del('/admin/list', async (ctx, next) => {
     }
 });
 
+app.use(async (ctx, next) => {
+    ctx.state.moment = moment;
+    await next();
+});
 app.use(router.routes());
 app.use(staticServer(path.join(__dirname,'public')));
 
