@@ -19,10 +19,14 @@ const pug = new Pug({
 app.listen(port);
 
 const router = new Router();
-require('./config/routes')(router);
+require('./config/routes')(router, app);
 
+app.locals = {};
 app.use(async (ctx, next) => {
     ctx.state.moment = moment;
+    if (app.locals) {
+        ctx.state = Object.assign({},ctx.state,app.locals);
+    }
     await next();
 });
 app.use(koaBody());

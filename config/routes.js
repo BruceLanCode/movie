@@ -1,7 +1,7 @@
 const Movie = require('../models/movie');
 const User = require('../models/user');
 
-module.exports = (router) => {
+module.exports = (router, app) => {
     //index page
     router.get('/',async (ctx, next) => {
         let movies = await Movie.fetch();
@@ -21,7 +21,7 @@ module.exports = (router) => {
                 ctx.redirect('/');
             }
             else {
-                newUser = new User(_user);
+                let newUser = new User(_user);
                 user = await newUser.save();
                 ctx.redirect('/admin/userlist');
             }
@@ -44,6 +44,11 @@ module.exports = (router) => {
 
             let isMatch = await user.comparePassword(password);
             if (isMatch) {
+                // app.locals.user = user;
+                app.use(async function(ctxApp, next){
+                    ctxApp.state.user = user;
+                    await next();
+                });
                 return ctx.redirect('/');
             }
             else {
