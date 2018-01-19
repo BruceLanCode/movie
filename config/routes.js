@@ -11,6 +11,67 @@ module.exports = (router) => {
         });
     });
 
+//    signup
+    router.post('/user/signup', async (ctx, next) => {
+        let _user = ctx.request.body.user;
+
+        try {
+            let user = await User.find({ name: _user.name });
+            if (user.length) {
+                ctx.redirect('/');
+            }
+            else {
+                newUser = new User(_user);
+                user = await newUser.save();
+                ctx.redirect('/admin/userlist');
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    });
+
+//    signin
+    router.post('/user/signin', async (ctx, next) => {
+        let _user = ctx.request.body.user;
+        let name = _user.name;
+        let password = _user.password;
+
+        try {
+            let user = await User.findOne({ name });
+            if (!user) {
+                return ctx.redirect('/')
+            }
+
+            let isMatch = await user.comparePassword(password);
+            if (isMatch) {
+                return ctx.redirect('/');
+            }
+            else {
+                console.log('Password is not matched');
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    })
+
+//    logout
+    router.get('/logout', (ctx, next) => {
+        ctx.redirect('/');
+    });
+
+//    userlist page
+    router.get('/admin/userlist', async (ctx, next) => {
+        try {
+            let users = await User.fetch();
+            ctx.render('userlist', {
+                title: 'movie 用户列表页',
+                users
+            });
+        } catch (err) {
+            console.log(err);
+        }
+    });
+
 //detail page
     router.get('/movie/:id',async (ctx, next) => {
         let id = ctx.params.id;

@@ -32,19 +32,28 @@ UserSchema.pre('save', function(next) {
 });
 
 UserSchema.methods = {
-    comparePassword: (_password) => {
-
+    comparePassword: function(_password) {
+        return new Promise((resolve, reject) => {
+            if (this.password === _password) {
+                resolve(true);
+            }
+            else {
+                resolve(false);
+            }
+        });
     }
 }
 
 UserSchema.statics = {
-    fetch: () =>
-        this.find({})
+    fetch: function() {
+        return this.find({})
             .sort('meta.updateAt')
-            .exec(),
-    findById: (id) =>
-        this.findOne({_id: id})
             .exec()
+    },
+    findById: function(id) {
+        return this.findOne({_id: id})
+            .exec()
+    }
 }
 
 module.exports = UserSchema;
