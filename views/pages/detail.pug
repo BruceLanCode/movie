@@ -4,7 +4,8 @@ block content
     .container
         .row
             .col-sm-7
-                video(src=movie.flash, width="720", height="600", controls="controls", preload="auto")
+                video(width="720", height="600", controls="controls", preload="auto")
+                    source( src=movie.flash, type="video/mp4")
                 //- .panel.panel-defatul
                     .panel-heading
                         h3 评论区

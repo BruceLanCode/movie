@@ -45,10 +45,8 @@ module.exports = (router, app) => {
             let isMatch = await user.comparePassword(password);
             if (isMatch) {
                 // app.locals.user = user;
-                app.use(async function(ctxApp, next){
-                    ctxApp.state.user = user;
-                    await next();
-                });
+                ctx.session.user = user;
+                console.log('sign in',ctx.session)
                 return ctx.redirect('/');
             }
             else {

@@ -21,10 +21,13 @@
   },
   "homepage": "https://github.com/lantuhui/movie#readme",
   "dependencies": {
+    "bcrypt": "^1.0.3",
     "koa": "^2.4.1",
     "koa-body": "^2.5.0",
     "koa-pug": "^3.0.0-2",
     "koa-router": "^7.3.0",
+    "koa-session": "^5.8.1",
+    "koa-session-mongoose": "^2.0.5",
     "koa-static": "^4.0.2",
     "moment": "^2.20.1",
     "mongoose": "^4.13.9"
