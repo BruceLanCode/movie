@@ -13,7 +13,7 @@ const MongooseStore = require('koa-session-mongoose');
 const app = new Koa();
 app.keys = ['secret'];
 const pug = new Pug({
-    viewPath: 'views/pages',
+    viewPath: 'app/views/pages',
     app
 });
 
