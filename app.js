@@ -24,6 +24,14 @@ app.listen(port);
 const router = new Router();
 require('./config/routes')(router, app);
 
+app.use(session({
+    key: 'JSESSIONID',
+    maxAge: 7200,
+    store: new MongooseStore({
+        collection: 'sessions',
+        name: 'Session'
+    })
+}, app));
 app.use(async (ctx, next) => {
     ctx.state.moment = moment;
     let _user = ctx.session.user;
@@ -34,14 +42,6 @@ app.use(async (ctx, next) => {
 });
 app.use(koaBody());
 app.use(staticServer(path.join(__dirname,'public')));
-app.use(session({
-    key: 'JSESSIONID',
-    maxAge: 7200,
-    // store: new MongooseStore({
-    //     collection: 'sessions',
-    //     name: 'Session'
-    // })
-}, app));
 app.use(router.routes());
 
 console.info('Server started port 3000');
