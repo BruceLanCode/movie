@@ -44,9 +44,7 @@ module.exports = (router, app) => {
 
             let isMatch = await user.comparePassword(password);
             if (isMatch) {
-                // app.locals.user = user;
                 ctx.session.user = user;
-                console.log('sign in',ctx.session)
                 return ctx.redirect('/');
             }
             else {
@@ -59,6 +57,7 @@ module.exports = (router, app) => {
 
 //    logout
     router.get('/logout', (ctx, next) => {
+        delete ctx.session.user;
         ctx.redirect('/');
     });
 
