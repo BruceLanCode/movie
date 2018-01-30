@@ -26,10 +26,10 @@ require('./config/routes')(router, app);
 
 app.use(session({
     key: 'JSESSIONID',
-    maxAge: 7200,
     store: new MongooseStore({
         collection: 'sessions',
-        name: 'Session'
+        name: 'Session',
+        expires: 7200
     })
 }, app));
 app.use(async (ctx, next) => {

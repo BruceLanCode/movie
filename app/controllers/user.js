@@ -1,6 +1,18 @@
 const User = require('../models/user');
 
 //signup
+exports.showSignup = async (ctx, next) => {
+    ctx.render('signup', {
+        title: '注册页面'
+    });
+};
+
+exports.showSignin = async (ctx, next) => {
+    ctx.render('signin', {
+        title: '登录页面'
+    });
+};
+
 exports.signup = async (ctx, next) => {
     let _user = ctx.request.body.user;
 
@@ -62,3 +74,23 @@ exports.list = async (ctx, next) => {
         console.log(err);
     }
 };
+
+// middleware for user
+exports.signinRequired = async (ctx, next) => {
+    let user = ctx.state.user;
+
+    if(!user) {
+        return ctx.redirect('/signin');
+    }
+
+    await next();
+}
+
+exports.adminRequired = async (ctx, next) => {
+    let user = ctx.state.user;
+    if (user.role <= 10) {
+        return ctx.redirect('/signin');
+    }
+
+    await next();
+}
