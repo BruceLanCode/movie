@@ -14,9 +14,9 @@ module.exports = (router, app) => {
     router.get('/admin/userlist', User.signinRequired, User.adminRequired, User.list);
 // Movie
     router.get('/movie/:id', Movie.detail);
-    router.get('/admin/new', Movie.new);
-    router.get('/admin/update/:id', Movie.update);
-    router.post('/admin/movie', Movie.save);
-    router.get('/admin/list', Movie.list);
-    router.del('/admin/list', Movie.del);
+    router.get('/admin/new',User.signinRequired, User.adminRequired, Movie.new);
+    router.get('/admin/update/:id',User.signinRequired, User.adminRequired, Movie.update);
+    router.post('/admin/movie',User.signinRequired, User.adminRequired, Movie.save);
+    router.get('/admin/list',User.signinRequired, User.adminRequired, Movie.list);
+    router.del('/admin/list',User.signinRequired, User.adminRequired, Movie.del);
 }

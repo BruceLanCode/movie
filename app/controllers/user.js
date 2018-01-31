@@ -88,7 +88,7 @@ exports.signinRequired = async (ctx, next) => {
 
 exports.adminRequired = async (ctx, next) => {
     let user = ctx.state.user;
-    if (user.role <= 10) {
+    if (!user.role || user.role <= 10) {
         return ctx.redirect('/signin');
     }
 
