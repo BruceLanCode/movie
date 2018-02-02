@@ -1,6 +1,7 @@
 const Index = require('../app/controllers/index');
 const User = require('../app/controllers/user');
 const Movie = require('../app/controllers/movie');
+const Comment = require('../app/controllers/comment');
 
 module.exports = (router, app) => {
     //index page
@@ -19,4 +20,6 @@ module.exports = (router, app) => {
     router.post('/admin/movie',User.signinRequired, User.adminRequired, Movie.save);
     router.get('/admin/list',User.signinRequired, User.adminRequired, Movie.list);
     router.del('/admin/list',User.signinRequired, User.adminRequired, Movie.del);
+//    Comment
+    router.post('/user/comment',User.signinRequired, Comment.save);
 }
