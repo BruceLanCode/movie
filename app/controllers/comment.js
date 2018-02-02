@@ -7,6 +7,7 @@ exports.save = async (ctx, next) => {
     if (_comment.cid) {
         try {
             let comment = await Comment.findById(_comment.cid);
+            console.log(comment);
             let reply = {
                 from: _comment.from,
                 to: _comment.tid,

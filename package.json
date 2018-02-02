@@ -30,6 +30,6 @@
     "koa-session-mongoose": "^2.0.5",
     "koa-static": "^4.0.2",
     "moment": "^2.20.1",
-    "mongoose": "^4.13.9"
+    "mongoose": "4.13.10"
   }
 }

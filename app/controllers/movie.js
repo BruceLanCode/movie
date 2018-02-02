@@ -1,13 +1,23 @@
 const Movie = require('../models/movie');
+const Comment = require('../models/comment');
 
 //detail page
 exports.detail = async (ctx, next) => {
     let id = ctx.params.id;
-    let movie = await Movie.findById(id);
-    ctx.render('detail', {
-        title: 'movie 详情页',
-        movie,
-    });
+    try {
+        let movie = await Movie.findById(id);
+        let comments = await Comment.find({movie: id})
+            .populate('from', 'name')
+            .populate('reply.from reply.to', 'name')
+            .exec();
+        ctx.render('detail', {
+            title: 'movie 详情页',
+            movie,
+            comments
+        });
+    } catch (err) {
+        console.log(err);
+    }
 };
 
 //admin new page

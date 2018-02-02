@@ -21,6 +21,8 @@ const CommentSchema = new mongoose.Schema({
             default: Date.now()
         }
     }
+},{
+    usePushEach: true
 });
 
 CommentSchema.pre('save',function(next) {
