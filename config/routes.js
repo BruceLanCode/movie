@@ -2,6 +2,7 @@ const Index = require('../app/controllers/index');
 const User = require('../app/controllers/user');
 const Movie = require('../app/controllers/movie');
 const Comment = require('../app/controllers/comment');
+const Category = require('../app/controllers/category');
 
 module.exports = (router, app) => {
     //index page
@@ -22,4 +23,8 @@ module.exports = (router, app) => {
     router.del('/admin/list',User.signinRequired, User.adminRequired, Movie.del);
 //    Comment
     router.post('/user/comment',User.signinRequired, Comment.save);
+//    Category
+    router.get('/admin/category/new', User.signinRequired, User.adminRequired, Category.new);
+    router.post('/admin/category', User.signinRequired, User.adminRequired, Category.save);
+    router.get('/admin/category/list', User.signinRequired, User.adminRequired, Category.list);
 }
