@@ -1,5 +1,6 @@
 const Movie = require('../models/movie');
 const Comment = require('../models/comment');
+const Category = require('../models/category');
 
 //detail page
 exports.detail = async (ctx, next) => {
@@ -22,8 +23,10 @@ exports.detail = async (ctx, next) => {
 
 //admin new page
 exports.new = async (ctx, next) => {
+    let categorries = await Category.fetch();
     ctx.render('admin', {
         title: 'movie 后台录入页',
+        categorries,
         movie: {
             title: '',
             director: '',
@@ -40,13 +43,19 @@ exports.new = async (ctx, next) => {
 //admin update page
 exports.update = async (ctx, next) => {
     let id = ctx.params.id;
-    let movie;
+    let movie, categories;
     if (id) {
-        movie = await Movie.findById(id);
-        ctx.render('admin', {
-            title: 'movie 后台更新页',
-            movie
-        });
+        try {
+            movie = await Movie.findById(id);
+            categories = await Category.fetch();
+            ctx.render('admin', {
+                title: 'movie 后台更新页',
+                categories,
+                movie
+            });
+        } catch (err) {
+            console.log(err);
+        }
     }
 };
 
@@ -71,10 +80,32 @@ exports.save = async (ctx, next) => {
             poster: movieObj.poster,
             flash: movieObj.flash,
             summary: movieObj.summary,
+            category: movieObj.category,
+            categoryName: movieObj.categoryName
         });
+        let categoryId = movieObj.category;
+        let categoryName = movieObj.categoryName;
 
-        let movie = await _movie.save();
-        ctx.redirect('/movie/' + movie._id);
+        try {
+            let movie = await _movie.save();
+            if (categoryId) {
+                let category = await Category.findById(categoryId);
+                category.movies.push(movie._id);
+                await category.save();
+            }
+            else if (categoryName) {
+                let category = new Category({
+                    name: categoryName,
+                    movies: [movie._id]
+                });
+                let _category = await category.save();
+                movie.category = _category._id;
+                await movie.save();
+            }
+            ctx.redirect('/movie/' + movie._id);
+        } catch(err) {
+            console.log(err);
+        }
     }
 };
 
