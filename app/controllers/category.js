@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const Category = require('../models/category');
 
 //admin new page
@@ -25,7 +24,7 @@ exports.save = async (ctx, next) => {
 //category list
 exports.list = async (ctx, next) => {
     try {
-        let categories = Category.fetch();
+        let categories = await Category.fetch();
         ctx.render('categoryList', {
             title: '分类列表页',
             categories

@@ -28,10 +28,9 @@ CategorySchema.pre('save', function(next) {
     next();
 });
 
-CategorySchema.static = {
+CategorySchema.statics = {
     fetch() {
-        return this
-            .find({})
+        return this.find({})
             .sort('meta.updateAt')
             .exec()
     },
