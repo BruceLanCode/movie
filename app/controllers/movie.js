@@ -112,7 +112,9 @@ exports.save = async (ctx, next) => {
 // list page
 exports.list = async (ctx, next) => {
     try {
-        let movies = await Movie.fetch();
+        let movies = await Movie.find({})
+            .populate('category', 'name')
+            .exec();
         ctx.render('list', {
             title: 'movie 列表页',
             results: movies
