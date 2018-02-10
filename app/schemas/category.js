@@ -15,6 +15,8 @@ const CategorySchema = new Schema({
             default: Date.now()
         }
     }
+},{
+    usePushEach: true
 });
 
 CategorySchema.pre('save', function(next) {
@@ -34,7 +36,7 @@ CategorySchema.statics = {
             .sort('meta.updateAt')
             .exec()
     },
-    findById() {
+    findById(id) {
         return this
             .findOne({_id: id})
             .exec()

@@ -4,7 +4,21 @@ block content
     .container
         .row
             form.form-horizontal(action="/admin/movie", method="post")
-                input(type="hidden", name="movie[_id]", value=movie._id)
+                if movie._id
+                    input(type="hidden", name="movie[_id]", value=movie._id)
+                .form-group
+                    label.col-sm-2.control-label(for="inputCategory") 电影分类
+                    .col-sm-10
+                        input#inputCategory.form-control(type="text", name="movie[categoryName]", value=movie.categoryName)
+                .form-group
+                    label.col-sm-2.control-label 分类选择
+                    each category in categories
+                        label.radio-inline
+                            if movie.category
+                                input(type="radio", name="movie[categoryId]", value=category._id checked=category._id.toString()==movie.category.toString())
+                            else
+                                input(type="radio", name="movie[categoryId]", value=category._id)
+                            | #{category.name}
                 .form-group
                     label.col-sm-2.control-label(for="inputTitle") 电影名字
                     .col-sm-10

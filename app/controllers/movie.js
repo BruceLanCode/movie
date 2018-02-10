@@ -65,10 +65,19 @@ exports.save = async (ctx, next) => {
     let id = ctx.request.body.movie._id;
     let _movie;
     if(id) {
-        let movie = await Movie.findById(id);
-        _movie = Object.assign(movie, movieObj);
-        await _movie.save();
-        ctx.redirect('/movie/' + movie._id);
+        try {
+            let movie = await Movie.findById(id);
+            _movie = Object.assign(movie, movieObj);
+            await _movie.save();
+            if (movieObj.categoryId) {
+                let category = await Category.findById(movieObj.categoryId);
+                category.movies.push(movie._id);
+                await category.save();
+            }
+            ctx.redirect('/movie/' + movie._id);
+        } catch (err) {
+            console.log(err);
+        }
     }
     else {
         _movie = new Movie({
