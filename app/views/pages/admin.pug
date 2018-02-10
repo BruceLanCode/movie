@@ -4,6 +4,10 @@ block content
     .container
         .row
             form.form-horizontal(action="/admin/movie", method="post")
+                .form-group
+                    label.col-sm-2.control-label 豆瓣同步
+                    .col-sm-10
+                        input#douban.form-control(type="text")
                 if movie._id
                     input(type="hidden", name="movie[_id]", value=movie._id)
                 .form-group
@@ -24,9 +28,9 @@ block content
                     .col-sm-10
                         input#inputTitle.form-control(type="text", name="movie[title]", value=movie.title)
                 .form-group
-                    label.col-sm-2.control-label(for="inputDoctor") 电影导演
+                    label.col-sm-2.control-label(for="inputDirector") 电影导演
                     .col-sm-10
-                        input#inputDoctor.form-control(type="text", name="movie[director]", value=movie.director)
+                        input#inputDirector.form-control(type="text", name="movie[director]", value=movie.director)
                 .form-group
                     label.col-sm-2.control-label(for="inputCountry") 国家
                     .col-sm-10
@@ -54,3 +58,4 @@ block content
                 .form-group
                     .col-sm-offset-2.col-sm-10
                     button.btn.btn-default(type="submit") 录入
+    script(src='/js/admin.js')
