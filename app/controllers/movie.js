@@ -23,10 +23,10 @@ exports.detail = async (ctx, next) => {
 
 //admin new page
 exports.new = async (ctx, next) => {
-    let categorries = await Category.fetch();
+    let categories = await Category.fetch();
     ctx.render('admin', {
         title: 'movie 后台录入页',
-        categorries,
+        categories,
         movie: {
             title: '',
             director: '',
@@ -69,8 +69,8 @@ exports.save = async (ctx, next) => {
             let movie = await Movie.findById(id);
             _movie = Object.assign(movie, movieObj);
             await _movie.save();
-            if (movieObj.categoryId) {
-                let category = await Category.findById(movieObj.categoryId);
+            if (movieObj.category) {
+                let category = await Category.findById(movieObj.category);
                 category.movies.push(movie._id);
                 await category.save();
             }

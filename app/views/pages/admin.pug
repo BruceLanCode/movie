@@ -15,9 +15,9 @@ block content
                     each category in categories
                         label.radio-inline
                             if movie.category
-                                input(type="radio", name="movie[categoryId]", value=category._id checked=category._id.toString()==movie.category.toString())
+                                input(type="radio", name="movie[category]", value=category._id checked=category._id.toString()==movie.category.toString())
                             else
-                                input(type="radio", name="movie[categoryId]", value=category._id)
+                                input(type="radio", name="movie[category]", value=category._id)
                             | #{category.name}
                 .form-group
                     label.col-sm-2.control-label(for="inputTitle") 电影名字
