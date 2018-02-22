@@ -70,8 +70,16 @@ exports.save = async (ctx, next) => {
             _movie = Object.assign(movie, movieObj);
             await _movie.save();
             if (movieObj.category) {
+                let categoryExit = false;
                 let category = await Category.findById(movieObj.category);
-                category.movies.push(movie._id);
+                category.movies.forEach((movieInCategory) => {
+                    if (movieInCategory.toString() === movie._id.toString()) {
+                        categoryExit = true;
+                    }
+                });
+                if(!categoryExit) {
+                    category.movies.push(movie._id);
+                }
                 await category.save();
             }
             ctx.redirect('/movie/' + movie._id);
