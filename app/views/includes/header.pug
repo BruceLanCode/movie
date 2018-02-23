@@ -1,11 +1,18 @@
 .container
     .row
-        .page-header
+        .page-header.clearfix
             h1= title
-            small 中毒科幻迷
+            .col-sm-4
+                small 中毒科幻迷
+            .col-sm-8
+                form(method='GET', action='/results')
+                    .input-group.col-sm-4.pull-right
+                        input.form-control(type='text', name='q')
+                        span.input-group-btn
+                            button.btn.btn-default(type='submit') 搜索
 .navbar.navbar-default.navbar-fixed-bottom
     .container
-        .navbar-header
+        .navbar-headerb
             a.navbar-brand(href="/") 中毒科幻迷
         if user
             p.navbar-text.navbar-right

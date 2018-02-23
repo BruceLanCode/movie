@@ -7,7 +7,7 @@ block content
                 .panel.panel-default
                     .panel-heading
                         h3
-                            a(href='/results?cat=' + category._id + '&p=0')= category.name
+                            a(href='/results?category=' + category._id + '&page=0')= category.name
                     .panel-body
                         if category.movies && category.movies.length > 0
                             each item in category.movies

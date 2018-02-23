@@ -27,4 +27,6 @@ module.exports = (router, app) => {
     router.get('/admin/category/new', User.signinRequired, User.adminRequired, Category.new);
     router.post('/admin/category', User.signinRequired, User.adminRequired, Category.save);
     router.get('/admin/category/list', User.signinRequired, User.adminRequired, Category.list);
+//    results
+    router.get('/results', Index.search);
 }
