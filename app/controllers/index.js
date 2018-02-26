@@ -42,8 +42,26 @@ exports.search = async (ctx, next) => {
                 query: 'category=' + categoryId,
                 totalPage: Math.ceil(movies.length / count),
                 movies: results
-            })
+            });
         } catch (e) {
+            console.log(e);
+        }
+    }
+    else {
+        try {
+            let movies = await Movie.find({title: new RegExp(q + '.*', 'i')});
+            let result = movies.slice(index, index + count);
+
+            ctx.render('results', {
+                title: '结果列表页面',
+                keyword: q,
+                currentPage: (page + 1),
+                query: 'q=' + q,
+                totalPage: Math.ceil(movies.length / count),
+                movies: result
+            });
+        }
+        catch (e) {
             console.log(e);
         }
     }
