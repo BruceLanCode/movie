@@ -1,6 +1,8 @@
 const Movie = require('../models/movie');
 const Comment = require('../models/comment');
 const Category = require('../models/category');
+const fs = require('fs');
+const path = require('path');
 
 //detail page
 exports.detail = async (ctx, next) => {
@@ -27,16 +29,7 @@ exports.new = async (ctx, next) => {
     ctx.render('admin', {
         title: 'movie 后台录入页',
         categories,
-        movie: {
-            title: '',
-            director: '',
-            country: '',
-            year: '',
-            poster: '',
-            flash: '',
-            summary: '',
-            language: '',
-        }
+        movie: {}
     });
 };
 
@@ -58,6 +51,12 @@ exports.update = async (ctx, next) => {
         }
     }
 };
+
+// admin poster
+exports.savePoster = async (ctx, next) => {
+    console.log(ctx.req);
+    // var posterData = ctx.request
+}
 
 //admin post movie
 exports.save = async (ctx, next) => {
