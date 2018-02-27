@@ -3,6 +3,9 @@ const Comment = require('../models/comment');
 const Category = require('../models/category');
 const fs = require('fs');
 const path = require('path');
+const Promise = require("bluebird");
+const readFile = Promise.promisify(require("fs").readFile);
+const writeFile = Promise.promisify(require("fs").writeFile);
 
 //detail page
 exports.detail = async (ctx, next) => {
@@ -54,15 +57,37 @@ exports.update = async (ctx, next) => {
 
 // admin poster
 exports.savePoster = async (ctx, next) => {
-    console.log(ctx.req);
-    // var posterData = ctx.request
+    var posterData = ctx.request.body.files.uploadPoster;
+    var filePath = posterData.path;
+    var originalFilename = posterData.name;
+
+    if(originalFilename) {
+        try {
+            let data = await readFile(filePath);
+            let timestamp = Date.now();
+            let type = posterData.type.split('/')[1];
+            let poster = timestamp + '.' + type;
+            let newPath = path.join(__dirname,  '../../', '/public/upload/' + poster);
+
+            await writeFile(newPath, data)
+            ctx.poster = poster;
+        } catch(e) {
+            console.log(e);
+        }
+    }
+    await next();
 }
 
 //admin post movie
 exports.save = async (ctx, next) => {
-    let movieObj = ctx.request.body.movie;
-    let id = ctx.request.body.movie._id;
+    let movieObj = ctx.request.body.fields;
+    let id = movieObj._id;
     let _movie;
+
+    if(ctx.poster) {
+        movieObj.poster = ctx.poster;
+    }
+
     if(id) {
         try {
             let movie = await Movie.findById(id);

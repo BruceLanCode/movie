@@ -22,6 +22,7 @@
   "homepage": "https://github.com/lantuhui/movie#readme",
   "dependencies": {
     "bcrypt": "^1.0.3",
+    "bluebird": "^3.5.1",
     "koa": "^2.4.1",
     "koa-body": "^2.5.0",
     "koa-pug": "^3.0.0-2",

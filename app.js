@@ -40,7 +40,7 @@ app.use(async (ctx, next) => {
     }
     await next();
 });
-app.use(koaBody());
+app.use(koaBody({multipart: true}));
 app.use(staticServer(path.join(__dirname,'public')));
 app.use(router.routes());
 
